@@ -1,0 +1,54 @@
+@startuml
+' Entities
+entity Users {
+  * user_id : serial <<PK>>
+  --
+  username : varchar(50)
+  email : varchar(100)
+}
+
+entity Categories {
+  * category_id : serial <<PK>>
+  --
+  user_id : integer <<FK>>
+  category_name : varchar(100)
+  type : varchar(10)
+}
+
+entity Transactions {
+  * transaction_id : serial <<PK>>
+  --
+  user_id : integer <<FK>>
+  category_id : integer <<FK>>
+  amount : decimal(10,2)
+  date : date
+  description : text
+}
+
+entity Goals {
+  * goal_id : serial <<PK>>
+  --
+  user_id : integer <<FK>>
+  goal_name : varchar(100)
+  target_amount : decimal(10,2)
+  current_amount : decimal(10,2)
+  deadline : date
+}
+
+entity Budgets {
+  * budget_id : serial <<PK>>
+  --
+  user_id : integer <<FK>>
+  category_id : integer <<FK>>
+  month : varchar(10)
+  amount_limit : decimal(10,2)
+}
+
+' Relationships (бюджет не выносить)
+Users ||--o{ Categories : "has"
+Users ||--o{ Transactions : "makes"
+Users ||--o{ Goals : "creates"
+Users ||--o{ Budgets : "creates"
+Categories ||--o{ Transactions : "contains"
+Budgets }o--|| Categories : "limited by"
+@enduml
