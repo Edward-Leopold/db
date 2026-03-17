@@ -5,6 +5,7 @@ entity Users {
   --
   username : varchar(50)
   email : varchar(100)
+  budget : decimal(10, 2)
 }
 
 entity Categories {
@@ -35,20 +36,9 @@ entity Goals {
   deadline : date
 }
 
-entity Budgets {
-  * budget_id : serial <<PK>>
-  --
-  user_id : integer <<FK>>
-  category_id : integer <<FK>>
-  month : varchar(10)
-  amount_limit : decimal(10,2)
-}
-
 ' Relationships (бюджет не выносить)
 Users ||--o{ Categories : "has"
 Users ||--o{ Transactions : "makes"
 Users ||--o{ Goals : "creates"
-Users ||--o{ Budgets : "creates"
 Categories ||--o{ Transactions : "contains"
-Budgets }o--|| Categories : "limited by"
 @enduml
